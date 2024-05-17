@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat App</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
+</head>
+<body>
+<div id="chat-app">
+    <header id="chat-header">
+        <h1>ChatY</h1>
+    </header>
+    <section id="chat-box">
+        <ul id="message-list">
+            <li class="other-message">Hi there! 👋</li>
+            <li class="my-message">Hello! How are you doing today?</li>
+            <li class="other-message">I'm doing great, thanks for asking. Ready for our meeting later?</li>
+            <li class="my-message">Absolutely, can't wait!</li>
+        </ul>
+    </section>
+    <footer id="chat-footer">
+        <input type="text" id="message-input" placeholder="Type a message...">
+        <button onclick="sendMessage()">Send</button>
+    </footer>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
