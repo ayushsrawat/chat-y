@@ -1,107 +1,80 @@
-const messageInput = document.getElementById('message-input');
-const messageList = document.getElementById('message-list');
+document.addEventListener('DOMContentLoaded', () => {
+    let username = 'anonymous';
 
-let stompClient = null;
+    fetch('/api/username')
+        .then(response => response.text())
+        .then(data => {
+            username = data;
+            console.log('Username:', username);
 
-function connect() {
-    const socket = new SockJS('/ws'); // Your WebSocket endpoint
-    stompClient = Stomp.over(socket);
-    stompClient.connect({}, function (frame) {
-        console.log('Connected: ' + frame);
-        stompClient.subscribe('/topic/messages', function (messageOutput) {
-            showMessage(JSON.parse(messageOutput.body));
+            initializeChat(username);
+        })
+        .catch(error => {
+            console.error('Error fetching username:', error);
+            initializeChat(username);
         });
-    });
-}
 
-function disconnect() {
-    if (stompClient !== null) {
-        stompClient.disconnect();
-    }
-    console.log("Disconnected");
-}
+    function initializeChat(username) {
+        const socket = new SockJS('/chat');
+        const stompClient = Stomp.over(socket);
 
-function sendMessage() {
-    let messageContent = messageInput.value.trim();
-    if (messageContent && stompClient) {
-        const chatMessage = {
-            message: messageContent,
-            timestamp: new Date().toISOString(),
-            // sender information, etc.
-        };
-        stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
-        messageInput.value = '';
-    }
-}
-
-function showMessage(messageOutput) {
-    const messageElement = document.createElement('li');
-    messageElement.innerText = messageOutput.from + ": " + messageOutput.text;
-    messageList.appendChild(messageElement);
-}
-
-var socket = new SockJS('/chat');
-var stompClient = Stomp.over(socket);
-
-stompClient.connect({}, function (frame) {
-    console.log('Connected: ' + frame);
-    stompClient.subscribe('/topic/messages', function (messageOutput) {
-        console.log(JSON.parse(messageOutput.body));
-    });
-});
-
-stompClient.subscribe('/topic/messages', function (messageOutput) {
-    var message = JSON.parse(messageOutput.body);
-    document.getElementById('messages').innerHTML += '<p>' + message.from + ': ' + message.text + '</p>';
-});
-
-
-window.addEventListener('load', connect);
-window.addEventListener('beforeunload', disconnect);
-
-
-//chat
-
-let stompClient = null;
-
-function connect() {
-    const socket = new SockJS('/ws');
-    stompClient = Stomp.over(socket);
-    stompClient.connect({}, function (frame) {
-        console.log('Connected: ' + frame);
-        stompClient.subscribe('/topic/messages', function (messageOutput) {
-            showMessage(JSON.parse(messageOutput.body));
+        stompClient.connect({}, (frame) => {
+            console.log('Connected:', frame);
+            stompClient.subscribe('/topic/messages', (messageOutput) => {
+                console.log("subscribed to /topic/messages");
+                showMessage(JSON.parse(messageOutput.body), username);
+            });
         });
-    });
-}
 
-function sendMessage() {
-    const messageInput = document.getElementById('message-input');
-    const messageContent = messageInput.value.trim();
+        const messageInput = document.getElementById('message-input');
+        const sendButton = document.getElementById('send-button');
+        const messageList = document.getElementById('message-list');
+        const logoutButton = document.getElementById('logout-button');
 
-    if (messageContent && stompClient) {
-        const message = {
-            sender: 'User', // Replace with the actual username
-            content: messageContent,
-            type: 'CHAT'
-        };
-        stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(message));
-        messageInput.value = '';
+        messageInput.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        sendButton.addEventListener('click', sendMessage);
+        logoutButton.addEventListener('click', logout);
+
+        function sendMessage() {
+            const messageContent = messageInput.value;
+            if (messageContent && stompClient) {
+                const chatMessage = {
+                    content: messageContent,
+                    sender: username
+                };
+                stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
+                messageInput.value = '';
+                showMessage(chatMessage, username);
+            }
+        }
+
+        function showMessage(messageOutput, username) {
+            const messageElement = document.createElement('li');
+
+            if (messageOutput.sender === username) {
+                messageElement.classList.add('message', 'sent');
+            } else {
+                messageElement.classList.add('message', 'received');
+            }
+
+            const usernameElement = document.createElement('span');
+            usernameElement.classList.add('username');
+            usernameElement.textContent = messageOutput.sender + ": ";
+
+            messageElement.appendChild(usernameElement);
+            messageElement.appendChild(document.createTextNode(messageOutput.content));
+            messageList.appendChild(messageElement);
+
+            messageList.scrollTop = messageList.scrollHeight;
+        }
+
+        function logout() {
+            window.location.href = "/logout";
+        }
     }
-}
-
-function showMessage(message) {
-    const messageList = document.getElementById('message-list');
-    const messageElement = document.createElement('li');
-    messageElement.className = 'message';
-    messageElement.textContent = message.sender + ": " + message.content;
-    messageList.appendChild(messageElement);
-}
-
-function onMessageReceived(payload) {
-    var message = JSON.parse(payload.body);
-    // Display message in the chat area
-}
-
-
-connect();
+});

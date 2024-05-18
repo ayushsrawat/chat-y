@@ -1,36 +1,39 @@
 package com.spring.chatapp.websocket;
 
 import com.spring.chatapp.models.Message;
+import com.spring.chatapp.models.User;
+import com.spring.chatapp.services.MessageService;
+import com.spring.chatapp.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.stereotype.Controller;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Controller
 public class WebSocketController {
 
-    @MessageMapping("/message")  // This will be prefixed with "/app" due to config, i.e., "/app/message"
-    @SendTo("/topic/messages")   // Defines the topic on which the messages will be published.
-    public OutputMessage sendMessage(Message message) {
-        return new OutputMessage(
-                message.getSender().getUsername(),
-                message.getMessage(),
-                message.getTimestamp()
-        );
-    }
+    @Autowired
+    private MessageService messageService;
 
-    /*@MessageMapping("/chat.sendMessage")
-    @SendTo("/topic/public")
-    public OutputMessage sendMessage(Message message) {
-        return new OutputMessage(message.getSender(), message.getContent(), new Date());
-    }
+    @Autowired
+    private UserService userService;
 
-    @MessageMapping("/chat.addUser")
-    @SendTo("/topic/public")
-    public OutputMessage addUser(Message message, SimpMessageHeaderAccessor headerAccessor) {
-        headerAccessor.getSessionAttributes().put("username", message.getSender());
-        return new OutputMessage(message.getSender(), "joined", new Date());
-    }*/
+    @MessageMapping("/message")
+    @SendTo("/topic/messages")
+    public Message sendMessage(Message message) {
+        try{
+            Thread.sleep(500);
+            User sender = userService.findUserByUsername(message.getSender());
+            message.setSender(sender.getUsername());
+            message.setTimestamp(LocalDateTime.now());
+            messageService.saveMessage(message);
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        return message;
+    }
 }

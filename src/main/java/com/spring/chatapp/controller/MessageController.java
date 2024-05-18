@@ -23,8 +23,8 @@ public class MessageController {
         return messageService.saveMessage(message);
     }
 
-    @GetMapping("/sender/{senderId}")
-    public List<Message> getMessageBySenderId(@PathVariable Long senderId) {
-        return messageService.getMessageBySenderId(senderId);
+    @GetMapping("/sender/{sender}")
+    public List<Message> getMessageBySenderId(@PathVariable String sender) {
+        return messageService.getMessageBySender(sender);
     }
 }

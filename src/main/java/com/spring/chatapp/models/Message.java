@@ -17,14 +17,13 @@ public class Message {
     @Column(nullable = false)
     private LocalDateTime timestamp;
 
-    @ManyToOne
     @JoinColumn(name = "sender_id", nullable = false)
-    private User sender;
+    private String sender;
 
     public Message() {
     }
 
-    public Message(Long id, String message, LocalDateTime timestamp, User sender) {
+    public Message(Long id, String message, LocalDateTime timestamp, String sender) {
         this.id = id;
         this.message = message;
         this.timestamp = timestamp;
@@ -36,7 +35,6 @@ public class Message {
         timestamp = LocalDateTime.now();
     }
 
-    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -61,11 +59,11 @@ public class Message {
         this.timestamp = timestamp;
     }
 
-    public User getSender() {
+    public String getSender() {
         return sender;
     }
 
-    public void setSender(User sender) {
+    public void setSender(String sender) {
         this.sender = sender;
     }
 }

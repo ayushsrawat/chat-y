@@ -26,14 +26,6 @@ public class HomeController {
 
     @PostMapping("/login")
     public String handleLogin(@RequestParam String username, @RequestParam String password, HttpSession session, RedirectAttributes redirectAttributes) {
-        /*if (isValidUser(username, password)) {
-            session.setAttribute("username", username);
-            return "redirect:/chat";
-        } else {
-            redirectAttributes.addFlashAttribute("error", "Invalid username or password");
-            return "redirect:/login";
-        }*/
-
         User user = userService.findUserByUsername(username);
         if (user != null && password.equals(user.getPassword())) {
             session.setAttribute("username", username);
@@ -43,11 +35,6 @@ public class HomeController {
             return "redirect:/login";
         }
     }
-
-    private boolean isValidUser(String username, String password) {
-        return "user".equals(username) && "password".equals(password);
-    }
-
 
     @GetMapping("/signup")
     public String signupPage() {

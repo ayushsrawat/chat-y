@@ -21,7 +21,7 @@ public class MessageService {
         return messageRepository.save(message);
     }
 
-    public List<Message> getMessageBySenderId(Long senderId) {
-        return messageRepository.findBySenderId(senderId);
+    public List<Message> getMessageBySender(String sender) {
+        return messageRepository.findBySender(sender);
     }
 }
