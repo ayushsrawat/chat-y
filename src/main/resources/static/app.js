@@ -22,7 +22,9 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('Connected:', frame);
             stompClient.subscribe('/topic/messages', (messageOutput) => {
                 console.log("subscribed to /topic/messages");
-                showMessage(JSON.parse(messageOutput.body), username);
+                if(messageOutput.body != null){
+                    showMessage(JSON.parse(messageOutput.body), username);
+                }
             });
         });
 

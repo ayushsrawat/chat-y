@@ -17,7 +17,7 @@ public class Message {
     @Column(nullable = false)
     private LocalDateTime timestamp;
 
-    @JoinColumn(name = "sender_id", nullable = false)
+    @JoinColumn(name = "sender", nullable = false)
     private String sender;
 
     public Message() {
