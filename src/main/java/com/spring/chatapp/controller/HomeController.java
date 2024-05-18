@@ -52,4 +52,9 @@ public class HomeController {
             return "redirect:/login";
         }
     }
+
+    @GetMapping("/logout")
+    public String logout(){
+        return "index.html";
+    }
 }

@@ -7,15 +7,11 @@ import com.spring.chatapp.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
-@RestController
+@Controller
 public class WebSocketController {
 
     @Autowired
@@ -26,30 +22,23 @@ public class WebSocketController {
 
     @MessageMapping("/message")
     @SendTo("/topic/messages")
-    public Message sendMessage(@RequestBody Message message) {
-        /*try{
-            if (message != null
-                    && message.getSender() != null
-                    && !message.getSender().isEmpty()
-                    && message.getMessage() != null
-                    && !message.getMessage().isEmpty()) {
-
-                Thread.sleep(500);
-                User sender = userService.findUserByUsername(message.getSender());
-                if(sender != null) {
-                    System.out.println("Sender Username : " + sender.getUsername());
-                    message.setSender(sender.getUsername());
-                    message.setTimestamp(LocalDateTime.now());
-                    messageService.saveMessage(message);
-                }else {
-                    System.out.println("Sender User not found: " + message.getSender());
-                }
-            }else{
-                System.out.println("Message is null!");
+    public Message sendMessage(Message message) {
+        System.out.println("Received raw message: " + message.getMessage());
+        if (message != null && message.getSender() != null && !message.getSender().isEmpty() && message.getMessage() != null && !message.getMessage().isEmpty()) {
+            System.out.println("Received message: " + message.getMessage() + " from " + message.getSender());
+            User sender = userService.findUserByUsername(message.getSender());
+            if (sender != null) {
+                message.setSender(sender.getUsername());
+                message.setTimestamp(LocalDateTime.now());
+                messageService.saveMessage(message);
+                System.out.println("Message saved and sent: " + message.getMessage());
+            } else {
+                System.out.println("Sender User not found: " + message.getSender());
             }
-        }catch (InterruptedException e){
-            e.printStackTrace();
-        }*/
+        } else {
+            System.out.println("Message content or sender is null!");
+            /*System.out.println(userService.findUserByUsername(message.getSender()).getPassword());*/
+        }
         return message;
     }
 }

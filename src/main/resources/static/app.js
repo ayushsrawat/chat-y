@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('Connected:', frame);
             stompClient.subscribe('/topic/messages', (messageOutput) => {
                 console.log("subscribed to /topic/messages");
+                console.log("Message Received: ", messageOutput);
                 if(messageOutput.body != null){
                     showMessage(JSON.parse(messageOutput.body), username);
                 }
@@ -44,14 +45,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function sendMessage() {
             const messageContent = messageInput.value;
+            console.log("Message Content: ",messageContent);
             if (messageContent && stompClient) {
                 const chatMessage = {
-                    content: messageContent,
+                    message: messageContent,
                     sender: username
                 };
+                console.log("Sending Message: ", chatMessage);
                 stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
                 messageInput.value = '';
-                showMessage(chatMessage, username);
             }
         }
 
@@ -69,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
             usernameElement.textContent = messageOutput.sender + ": ";
 
             messageElement.appendChild(usernameElement);
-            messageElement.appendChild(document.createTextNode(messageOutput.content));
+            messageElement.appendChild(document.createTextNode(messageOutput.message));
             messageList.appendChild(messageElement);
 
             messageList.scrollTop = messageList.scrollHeight;

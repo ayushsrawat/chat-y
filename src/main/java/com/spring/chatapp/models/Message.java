@@ -11,13 +11,12 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+//    @Column(nullable = false)
     private String message;
 
-    @Column(nullable = false)
+//    @Column(nullable = false)
     private LocalDateTime timestamp;
 
-    @JoinColumn(name = "sender", nullable = false)
     private String sender;
 
     public Message() {
