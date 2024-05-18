@@ -6,13 +6,19 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(data => {
             username = data;
             console.log('Username:', username);
-
+            updateChatHeader(username);
             initializeChat(username);
         })
         .catch(error => {
             console.error('Error fetching username:', error);
+            updateChatHeader(username);
             initializeChat(username);
         });
+
+    function updateChatHeader(username) {
+        const chatHeader = document.querySelector('.chat-header h2');
+        chatHeader.textContent = username + "'s";
+    }
 
     function initializeChat(username) {
         const socket = new SockJS('/chat');

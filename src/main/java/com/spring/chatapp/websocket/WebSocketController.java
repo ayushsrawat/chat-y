@@ -37,7 +37,6 @@ public class WebSocketController {
             }
         } else {
             System.out.println("Message content or sender is null!");
-            /*System.out.println(userService.findUserByUsername(message.getSender()).getPassword());*/
         }
         return message;
     }
