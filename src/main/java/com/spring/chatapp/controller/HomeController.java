@@ -1,6 +1,10 @@
 package com.spring.chatapp.controller;
 
+import org.springframework.ui.Model;
+import com.spring.chatapp.models.User;
+import com.spring.chatapp.services.UserService;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,6 +15,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 public class HomeController {
 
+    @Autowired
+    private UserService userService;
+
+
     @RequestMapping("/login")
     public String loginPage() {
         return "login.html";
@@ -18,10 +26,16 @@ public class HomeController {
 
     @PostMapping("/login")
     public String handleLogin(@RequestParam String username, @RequestParam String password, HttpSession session, RedirectAttributes redirectAttributes) {
-        // Code to validate user credentials
-        // If valid, redirect to chat room
-        // If invalid, show an error message
-        if (isValidUser(username, password)) {
+        /*if (isValidUser(username, password)) {
+            session.setAttribute("username", username);
+            return "redirect:/chat";
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Invalid username or password");
+            return "redirect:/login";
+        }*/
+
+        User user = userService.findUserByUsername(username);
+        if (user != null && password.equals(user.getPassword())) {
             session.setAttribute("username", username);
             return "redirect:/chat";
         } else {
@@ -31,8 +45,6 @@ public class HomeController {
     }
 
     private boolean isValidUser(String username, String password) {
-        // Implement your logic to validate user credentials
-        // For example, checking against the database
         return "user".equals(username) && "password".equals(password);
     }
 
@@ -43,17 +55,14 @@ public class HomeController {
     }
 
     @PostMapping("/signup")
-    public String handleSignup(@RequestParam String username, @RequestParam String password) {
-        // Code to handle sign-up logic
-        // Save the new user to the database
-        // Redirect to login page after successful sign-up
-        return "redirect:/login";
+    public String handleSignup(@RequestParam String username, @RequestParam String password, Model model) {
+        if (userService.findUserByUsername(username) != null) {
+            model.addAttribute("error", "Username already taken");
+            return "signup.html";
+        } else {
+            User newUser = new User(username, password);
+            userService.saveUser(newUser);
+            return "redirect:/login";
+        }
     }
-
-    @GetMapping("/chat")
-    public String chatPage() {
-        return "chat.html";
-    }
-
-
 }

@@ -18,7 +18,7 @@ public class UserController {
 
     @PostMapping("/register")
     public User registerUser(User user) {
-        return userService.registerNewUser(user);
+        return userService.saveUser(user);
     }
 
     @GetMapping("/{username}")

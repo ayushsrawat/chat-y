@@ -1,10 +1,10 @@
 package com.spring.chatapp.models;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "messages")
 public class Message {
 
     @Id
@@ -18,6 +18,7 @@ public class Message {
     private LocalDateTime timestamp;
 
     @ManyToOne
+    @JoinColumn(name = "sender_id", nullable = false)
     private User sender;
 
     public Message() {
@@ -30,6 +31,12 @@ public class Message {
         this.sender = sender;
     }
 
+    @PrePersist
+    protected void onCreate() {
+        timestamp = LocalDateTime.now();
+    }
+
+    // Getters and Setters
     public Long getId() {
         return id;
     }
