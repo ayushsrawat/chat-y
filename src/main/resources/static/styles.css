@@ -123,3 +123,33 @@ body {
 .username {
     font-weight: bold;
 }
+
+/* login styles.css */
+body {
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('background.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: #fff;
+}
+
+.auth-container a {
+    transition: transform 0.3s, background-color 0.3s;
+}
+
+.auth-container a:hover {
+    transform: scale(1.1);
+    background-color: #28a745;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.welcome-animation {
+    animation: fadeIn 2s ease-in-out;
+}
+
