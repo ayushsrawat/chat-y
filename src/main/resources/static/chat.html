@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ChatY - Chat Room</title>
+    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="/styles.css">
     <script src="/webjars/jquery/jquery.min.js"></script>
     <script src="/webjars/sockjs-client/sockjs.min.js"></script>
@@ -11,21 +13,20 @@
     <script src="/app.js"></script>
 </head>
 
-<body>
-<div class="chat-container">
-    <div class="chat-header">
-        <h2>Chat Y</h2>
-        <button id="logout-button" class="logout-btn">Logout</button>
+<body class="chat-body">
+<div class="chat-container container d-flex flex-column align-items-center justify-content-center vh-100">
+    <div class="chat-header d-flex justify-content-between align-items-center w-100 p-3 mb-3">
+        <h2>ChatY</h2>
+        <button id="logout-button" class="btn btn-danger"><i class="fas fa-sign-out-alt"></i> Logout</button>
     </div>
-    <div class="chat-body">
+    <div class="chat-body w-100 p-3">
         <div class="message-area" id="message-area">
-            <ul id="message-list">
-            </ul>
+            <ul id="message-list" class="list-unstyled"></ul>
         </div>
     </div>
-    <div class="chat-footer">
-        <input type="text" id="message-input" class="message-input" placeholder="Type a message...">
-        <button id="send-button" class="send-btn">Send</button>
+    <div class="chat-footer w-100 p-3 d-flex">
+        <input type="text" id="message-input" class="form-control me-2" placeholder="Type a message...">
+        <button id="send-button" class="btn btn-success"><i class="fas fa-paper-plane"></i> Send</button>
     </div>
 </div>
 </body>

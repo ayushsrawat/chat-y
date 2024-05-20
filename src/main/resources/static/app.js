@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updateChatHeader(username) {
         const chatHeader = document.querySelector('.chat-header h2');
+        chatHeader.classList.add('username-h2')
         chatHeader.textContent = username + "'s";
     }
 
