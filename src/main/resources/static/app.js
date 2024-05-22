@@ -82,10 +82,15 @@ document.addEventListener('DOMContentLoaded', () => {
             messageList.appendChild(messageElement);
 
             messageList.scrollTop = messageList.scrollHeight;
+            scrollToBottom();
         }
 
         function logout() {
             window.location.href = "/logout";
+        }
+        function scrollToBottom() {
+            const messageArea = document.getElementById('message-area');
+            messageArea.scrollTop = messageArea.scrollHeight;
         }
     }
 });

@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateChatHeader(username) {
         const chatHeader = document.querySelector('.chat-header h2');
         chatHeader.classList.add('username-h2');
-        chatHeader.textContent = username + "'s homie";
+        chatHeader.textContent = username + "'s homie /blenderbot-3B";
     }
 
     function initializeChat(username) {
@@ -45,6 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
             userMessageElement.classList.add('message', 'sent');
             userMessageElement.innerHTML = `<strong>${username}: </strong> ${userMessage}`;
             messageList.appendChild(userMessageElement);
+            scrollToBottom();
             messageInput.value = "";
 
             showTypingIndicator();
@@ -61,6 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 botMessageElement.innerHTML = `<strong>Homie:</strong> ${botMessage}`;
                 messageList.appendChild(botMessageElement);
                 messageList.scrollTop = messageList.scrollHeight;
+                scrollToBottom();
             }).catch(error => {
                 const errorMessageElement = document.createElement('li');
                 errorMessageElement.className = 'error-message';
@@ -86,6 +88,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function logout() {
             window.location.href = "/logout";
+        }
+
+        function scrollToBottom() {
+            const messageArea = document.getElementById('message-area');
+            messageArea.scrollTop = messageArea.scrollHeight;
         }
     }
 
