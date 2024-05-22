@@ -271,3 +271,59 @@ body {
     padding: 0.75rem;
     border-radius: 0.25rem;
 }
+
+
+.friend-section {
+    background-color: lightseagreen;
+    color: black;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.bot-section {
+    background-color: tan;
+    color: black;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.chat-section {
+    width: 50%;
+    padding: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-align: center;
+}
+
+.chat-section:hover {
+    background-color: #ddd;
+}
+
+.section-title {
+    margin-bottom: 10px;
+    font-size: 24px;
+    color: #333;
+}
+
+.section-description {
+    font-size: 18px;
+    color: #555;
+}
+
+.typing-indicator {
+    font-size: 40px; 
+    color: black;
+    animation: typingAnimation 1s infinite alternate;
+}
+
+@keyframes typingAnimation {
+    0% { opacity: 0; }
+    50% { opacity: 1; }
+    100% { opacity: 0; }
+}

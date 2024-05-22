@@ -29,7 +29,7 @@ public class HomeController {
         User user = userService.findUserByUsername(username);
         if (user != null && password.equals(user.getPassword())) {
             session.setAttribute("username", username);
-            return "redirect:/chat";
+            return "redirect:/pathways";
         } else {
             redirectAttributes.addFlashAttribute("error", "Invalid username or password");
             return "redirect:/login";
