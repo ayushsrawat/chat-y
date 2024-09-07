@@ -18,7 +18,6 @@ public class HomeController {
     @Autowired
     private UserService userService;
 
-
     @RequestMapping("/login")
     public String loginPage() {
         return "login.html";

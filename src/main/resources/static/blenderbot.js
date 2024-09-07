@@ -78,14 +78,12 @@ document.addEventListener('DOMContentLoaded', () => {
             messageList.appendChild(typingIndicatorElement);
             messageList.scrollTop = messageList.scrollHeight;
         }
-
         function removeTypingIndicator() {
             const typingIndicator = document.querySelector('.typing-indicator');
             if (typingIndicator) {
                 messageList.removeChild(typingIndicator);
             }
         }
-
         function logout() {
             window.location.href = "/logout";
         }
@@ -95,7 +93,6 @@ document.addEventListener('DOMContentLoaded', () => {
             messageArea.scrollTop = messageArea.scrollHeight;
         }
     }
-
     async function query(data) {
         const response = await fetch(
             "https://api-inference.huggingface.co/models/facebook/blenderbot-3B",
