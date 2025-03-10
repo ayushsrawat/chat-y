@@ -97,7 +97,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const response = await fetch(
             "https://api-inference.huggingface.co/models/facebook/blenderbot-3B",
             {
-                headers: { Authorization: "Bearer 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" },
+                // Bearer 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
+                headers: { Authorization: "enterthebearerpasswordhere" },
                 method: "POST",
                 body: JSON.stringify(data),
             }
